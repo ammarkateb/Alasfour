@@ -1,0 +1,174 @@
+# Alasfour Flutter App - Architecture Rules
+
+## 📁 Folder Structure
+```
+lib/
+├── controllers/          # Screen controllers (ChangeNotifier)
+├── services/            # Business logic services
+├── models/              # Data models
+├── screens/             # UI screens
+├── widgets/             # Reusable UI components
+└── utils/               # Utility functions
+```
+
+## 🏗️ Architecture Principles
+
+### 1. Controller State Management
+- ✅ **Each screen gets its own controller**
+- ✅ **Controllers extend ChangeNotifier**
+- ✅ **State lives in controllers, not UI**
+- ✅ **UI widgets are "dumb" - only render controller state**
+- ✅ **Screens use ChangeNotifierProvider + Consumer**
+
+### 2. Product Management
+- ✅ **Central ProductService singleton**
+- ✅ **All product logic in one place**
+- ✅ **No hardcoded product data in screens**
+- ✅ **Real-time synchronization across app**
+
+### 3. Type Safety
+- ✅ **Use List<Product> never List<Map<String, dynamic>>**
+- ✅ **Strongly-typed models everywhere**
+- ✅ **No index-based data access**
+- ✅ **Pass Product objects, not indices**
+
+### 4. Component Reusability
+- ✅ **Extract repeated UI into widgets/**
+- ✅ **ProductImage, PriceTag, AddToCartButton, etc.**
+- ✅ **DRY principle - Don't Repeat Yourself**
+- ✅ **Change once, update everywhere**
+
+### 5. Screen-Controller Mapping
+```
+ProductsScreen → ProductsController
+CartScreen → CartController
+NotificationsScreen → NotificationsController
+ProfileScreen → ProfileController
+QRScannerScreen → QRScannerController
+LoginScreen → LoginController
+FinalScreen → FinalScreenController
+IntroScreen → IntroScreenController
+```
+
+## 📝 Naming Conventions
+
+### Controllers
+- **File:** `snake_case_controller.dart`
+- **Class:** `PascalCaseController`
+- **Example:** `products_controller.dart` → `ProductsController`
+
+### Screens
+- **File:** `snake_case_screen.dart`
+- **Class:** `PascalCaseScreen`
+- **Example:** `products_screen.dart` → `ProductsScreen`
+
+### Models
+- **File:** `snake_case.dart`
+- **Class:** `PascalCase`
+- **Example:** `product.dart` → `Product`
+
+### Widgets
+- **File:** `snake_case.dart`
+- **Class:** `PascalCase`
+- **Example:** `product_card.dart` → `ProductCard`
+
+### Services
+- **File:** `snake_case.dart`
+- **Class:** `PascalCase`
+- **Example:** `product_service.dart` → `ProductService`
+
+## 🔄 Data Flow
+
+### 1. Product Details Navigation
+```
+User taps product → controller.selectProduct(index) → 
+Navigator.pushNamed('/product-details', arguments: product) → 
+DetailsScreen receives Product object
+```
+
+### 2. Cart Operations
+```
+User action → CartController method → ProductService → 
+UI updates via notifyListeners()
+```
+
+### 3. State Updates
+```
+Controller changes state → notifyListeners() → 
+Consumer widgets rebuild → UI updates
+```
+
+## 🎯 Implementation Checklist
+
+### For Each Screen:
+- [ ] Has dedicated controller
+- [ ] Uses ChangeNotifierProvider
+- [ ] Uses Consumer for state
+- [ ] No business logic in UI
+- [ ] All async calls in controller
+
+### For Product Features:
+- [ ] Uses ProductService
+- [ ] Uses Product model
+- [ ] No hardcoded data
+- [ ] Type-safe navigation
+- [ ] Reusable components
+
+### For Components:
+- [ ] Extracted to widgets/
+- [ ] Reusable across screens
+- [ ] Configurable parameters
+- [ ] No hardcoded styles
+
+## 🚀 Do's and Don'ts
+
+### ✅ Do:
+- Create controller for each screen
+- Use ProductService for all product operations
+- Pass Product objects, not indices
+- Extract repeated UI into components
+- Follow naming conventions
+- Keep screens focused on layout
+
+### ❌ Don't:
+- Mix business logic with UI
+- Use Map<String, dynamic> for products
+- Hardcode product data in screens
+- Repeat UI code across screens
+- Access data by index
+- Skip controller for complex screens
+
+## 📋 Quality Standards
+
+### Code Quality:
+- ✅ Zero compilation errors
+- ✅ Proper error handling
+- ✅ Loading states
+- ✅ Type safety
+- ✅ Clean architecture
+
+### User Experience:
+- ✅ Real-time updates
+- ✅ Smooth navigation
+- ✅ Clear feedback
+- ✅ Consistent UI
+- ✅ Professional design
+
+### Maintainability:
+- ✅ Easy to extend
+- ✅ Easy to test
+- ✅ Easy to modify
+- ✅ Well documented
+- ✅ Consistent patterns
+
+---
+
+**Manager Requirements:**
+1. ✅ Controller state management
+2. ✅ Product management  
+3. ✅ List models & list index
+4. ✅ Product components
+5. ✅ Follow Rule.txt
+6. ✅ Controller for each screen
+
+**Status: ALL IMPLEMENTED ✅**
