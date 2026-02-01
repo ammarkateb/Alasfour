@@ -88,6 +88,7 @@ class ProductsController extends ChangeNotifier {
   // Product operations (delegate to service)
   Future<void> toggleFavorite(String productId) async {
     await _productService.toggleFavorite(productId);
+    notifyListeners();
   }
 
   Future<void> addToCart(String productId, {int quantity = 1}) async {

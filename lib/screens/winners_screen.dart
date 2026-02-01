@@ -106,7 +106,7 @@ class WinnersScreen extends StatelessWidget {
                   fontFamily: 'Tajawal',
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF8E0000),
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 3),
@@ -114,7 +114,7 @@ class WinnersScreen extends StatelessWidget {
                 'أشخاص حقيقيون يفوزون بجوائز حقيقية',
                 textAlign: TextAlign.right,
                 style: const TextStyle(
-                  color: Color(0xFF933023),
+                  color: Colors.black54,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   fontFamily: 'Tajawal',
@@ -278,33 +278,117 @@ class WinnersScreen extends StatelessWidget {
         child: Column(
           children: [
             // Row 1
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildWinnerWithPhoto(winners[0].$1, winners[0].$2, winners[0].$3, imagePath: 'assets/images/4.png'),
-                const SizedBox(width: 16),
-                _buildWinnerWithPhoto(winners[1].$1, winners[1].$2, winners[1].$3, imagePath: 'assets/images/6.png'),
-              ],
+            LayoutBuilder(
+              builder: (context, constraints) {
+                const double spacing = 16;
+                const double defaultCardWidth = 160;
+                const double defaultRowWidth = defaultCardWidth * 2 + spacing;
+
+                final double availableWidth = constraints.maxWidth;
+                final double adjustedWidth = ((availableWidth - spacing) / 2)
+                    .clamp(120, defaultCardWidth)
+                    .toDouble();
+                final double cardWidth = availableWidth >= defaultRowWidth
+                    ? defaultCardWidth
+                    : adjustedWidth;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildWinnerWithPhoto(
+                      winners[0].$1,
+                      winners[0].$2,
+                      winners[0].$3,
+                      imagePath: 'assets/images/4.png',
+                      width: cardWidth,
+                    ),
+                    const SizedBox(width: 16),
+                    _buildWinnerWithPhoto(
+                      winners[1].$1,
+                      winners[1].$2,
+                      winners[1].$3,
+                      imagePath: 'assets/images/6.png',
+                      width: cardWidth,
+                    ),
+                  ],
+                );
+              },
             ),
             const SizedBox(height: 143),
             // Row 2
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildWinnerWithPhoto(winners[2].$1, winners[2].$2, winners[2].$3, imagePath: 'assets/images/1.png'),
-                const SizedBox(width: 16),
-                _buildWinnerWithPhoto(winners[3].$1, winners[3].$2, winners[3].$3, imagePath: 'assets/images/2.png'),
-              ],
+            LayoutBuilder(
+              builder: (context, constraints) {
+                const double spacing = 16;
+                const double defaultCardWidth = 160;
+                const double defaultRowWidth = defaultCardWidth * 2 + spacing;
+
+                final double availableWidth = constraints.maxWidth;
+                final double adjustedWidth = ((availableWidth - spacing) / 2)
+                    .clamp(120, defaultCardWidth)
+                    .toDouble();
+                final double cardWidth = availableWidth >= defaultRowWidth
+                    ? defaultCardWidth
+                    : adjustedWidth;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildWinnerWithPhoto(
+                      winners[2].$1,
+                      winners[2].$2,
+                      winners[2].$3,
+                      imagePath: 'assets/images/1.png',
+                      width: cardWidth,
+                    ),
+                    const SizedBox(width: 16),
+                    _buildWinnerWithPhoto(
+                      winners[3].$1,
+                      winners[3].$2,
+                      winners[3].$3,
+                      imagePath: 'assets/images/2.png',
+                      width: cardWidth,
+                    ),
+                  ],
+                );
+              },
             ),
             const SizedBox(height: 143),
             // Row 3
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildWinnerWithPhoto(winners[4].$1, winners[4].$2, winners[4].$3, imagePath: 'assets/images/5.png'),
-                const SizedBox(width: 16),
-                _buildWinnerWithPhoto(winners[5].$1, winners[5].$2, winners[5].$3, imagePath: 'assets/images/3.png'),
-              ],
+            LayoutBuilder(
+              builder: (context, constraints) {
+                const double spacing = 16;
+                const double defaultCardWidth = 160;
+                const double defaultRowWidth = defaultCardWidth * 2 + spacing;
+
+                final double availableWidth = constraints.maxWidth;
+                final double adjustedWidth = ((availableWidth - spacing) / 2)
+                    .clamp(120, defaultCardWidth)
+                    .toDouble();
+                final double cardWidth = availableWidth >= defaultRowWidth
+                    ? defaultCardWidth
+                    : adjustedWidth;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildWinnerWithPhoto(
+                      winners[4].$1,
+                      winners[4].$2,
+                      winners[4].$3,
+                      imagePath: 'assets/images/5.png',
+                      width: cardWidth,
+                    ),
+                    const SizedBox(width: 16),
+                    _buildWinnerWithPhoto(
+                      winners[5].$1,
+                      winners[5].$2,
+                      winners[5].$3,
+                      imagePath: 'assets/images/3.png',
+                      width: cardWidth,
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),
@@ -312,10 +396,16 @@ class WinnersScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildWinnerWithPhoto(String name, String prize, String date, {String? imagePath}) {
+  Widget _buildWinnerWithPhoto(
+    String name,
+    String prize,
+    String date, {
+    String? imagePath,
+    double width = 160,
+  }) {
     return AnimatedButton(
       child: SizedBox(
-        width: 160,
+        width: width,
         child: Stack(
           clipBehavior: Clip.none,
           alignment: Alignment.topCenter,
@@ -324,7 +414,7 @@ class WinnersScreen extends StatelessWidget {
             Positioned(
               top: 40, // card a bit lower so avatar floats more clearly above
               child: Container(
-                width: 160,
+                width: width,
                 padding: const EdgeInsets.fromLTRB(12, 55, 12, 40),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFF0F0),

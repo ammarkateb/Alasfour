@@ -5,6 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../widgets/shared_nav.dart';
 import '../controllers/final_screen_controller.dart';
+import '../widgets/favorite_heart_button.dart';
+import '../models/product.dart';
 import '../utils/circle_arc_painter.dart';
 
 class AlasfourFinalScreen extends StatelessWidget {
@@ -51,7 +53,7 @@ class AlasfourFinalScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     // CREAM SECTION - أحدث المنتجات (fills down behind bottom nav)
-                    _buildLatestProductsSection(size, context),
+                    _buildLatestProductsSection(size, context, controller),
                   ],
                 ),
               ),
@@ -708,20 +710,17 @@ class AlasfourFinalScreen extends StatelessWidget {
   }
 
   // Cream section with latest products
-  Widget _buildLatestProductsSection(Size size, BuildContext context) {
-    final products = [
-      ('طعم غني بالفستق', 'assets/images/514348169_1192444092895471_42307.png'),
-      ('كل حبة بحبتها', 'assets/images/605327917_1339959141477298_3665058675691574909_n.jpg'),
-      ('رز إسباني', 'assets/images/598860259_1334461122027100_5329054173698521768_n.jpg'),
-      ('فاصوليا', 'assets/images/547432464_1255000023306544_5398140175460720862_n.jpg'),
-    ];
-
-    final captions = [
-      'رز إسباني',        // 1st from the right
-      'بقلاوة بالفستق',   // 2nd
-      'بقوليات',          // 3rd
-      'عروض',             // 4th
-    ];
+  Widget _buildLatestProductsSection(Size size, BuildContext context, FinalScreenController controller) {
+    final dynamicProducts = controller.products.take(4).toList();
+    final items = dynamicProducts.isNotEmpty
+        ? dynamicProducts
+            .map((product) => _LatestProductCardData(
+                  title: product.title.isNotEmpty ? product.title : product.name,
+                  imagePath: product.imagePath,
+                  product: product,
+                ))
+            .toList()
+        : _fallbackLatestProducts;
 
     return Container(
       width: double.infinity,
@@ -777,11 +776,11 @@ class AlasfourFinalScreen extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               reverse: true,
               padding: const EdgeInsets.only(left: 16, right: 5),
-              itemCount: products.length,
+              clipBehavior: Clip.none,
+              itemCount: items.length,
               separatorBuilder: (_, __) => const SizedBox(width: 16),
               itemBuilder: (context, index) {
-                final product = products[index];
-                final caption = captions[index];
+                final cardData = items[index];
 
                 return Stack(
                   clipBehavior: Clip.none, // Allow children to extend outside Stack bounds
@@ -804,7 +803,7 @@ class AlasfourFinalScreen extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
                             child: Image.asset(
-                              product.$2,
+                              cardData.imagePath,
                               height: 175,
                               width: double.infinity,
                               fit: BoxFit.cover,
@@ -813,7 +812,7 @@ class AlasfourFinalScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          caption,
+                          cardData.title,
                           style: const TextStyle(
                             fontFamily: 'Tajawal',
                             fontWeight: FontWeight.bold,
@@ -828,32 +827,11 @@ class AlasfourFinalScreen extends StatelessWidget {
                     Positioned(
                       top: -7, // Only 1/4 of circle (7px) shows above top edge
                       left: 0, // Left edge of circle aligned with left edge of card
-                      child: GestureDetector(
-                        onTap: () {
-                          // Add favorite functionality here
-                          print('Favorite button tapped');
-                        },
-                        child: Container(
-                          width: 28, // Same size as products screen
-                          height: 28,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFE9ECEF), // New background color
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 1), // Thin white border
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: SvgPicture.asset(
-                            'Design materials/Icons/Frame 2147227093.svg', // Same heart icon
-                            width: 16,
-                            height: 16,
-                          ),
-                        ),
+                      child: FavoriteHeartButton(
+                        isFavorite: cardData.product?.isFavorite ?? false,
+                        onPressed: cardData.product == null
+                            ? null
+                            : () async => controller.toggleFavorite(cardData.product!.id),
                       ),
                     ),
                   ],
@@ -867,6 +845,37 @@ class AlasfourFinalScreen extends StatelessWidget {
     );
   }
 }
+
+class _LatestProductCardData {
+  final String title;
+  final String imagePath;
+  final Product? product;
+
+  const _LatestProductCardData({
+    required this.title,
+    required this.imagePath,
+    this.product,
+  });
+}
+
+const List<_LatestProductCardData> _fallbackLatestProducts = [
+  _LatestProductCardData(
+    title: 'رز إسباني',
+    imagePath: 'assets/images/514348169_1192444092895471_42307.png',
+  ),
+  _LatestProductCardData(
+    title: 'بقلاوة بالفستق',
+    imagePath: 'assets/images/605327917_1339959141477298_3665058675691574909_n.jpg',
+  ),
+  _LatestProductCardData(
+    title: 'بقوليات',
+    imagePath: 'assets/images/598860259_1334461122027100_5329054173698521768_n.jpg',
+  ),
+  _LatestProductCardData(
+    title: 'عروض',
+    imagePath: 'assets/images/547432464_1255000023306544_5398140175460720862_n.jpg',
+  ),
+];
 
 class AnimatedButton extends StatefulWidget {
   final Widget child;

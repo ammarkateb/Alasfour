@@ -64,7 +64,7 @@ Widget buildSharedBottomNav(BuildContext context) {
               children: [
                 // PROFILE ICON (left) - ADJUSTABLE
                 Transform.translate(
-                  offset: const Offset(14.7, -1), // ⬆️⬇️⬅️➡️ ADJUST HERE (x, y) - positive y = UP, negative y = DOWN
+                  offset: const Offset(14.7, 9), // ⬆️⬇️⬅️➡️ ADJUST HERE (x, y) - positive y = UP, negative y = DOWN
                   child: AnimatedButton(
                     onTap: () {
                       print('Profile button tapped');
@@ -86,7 +86,7 @@ Widget buildSharedBottomNav(BuildContext context) {
                 ),
                 // WINNERS ICON (left-center) - ADJUSTABLE
                 Transform.translate(
-                  offset: const Offset(14.3, -12), // ⬆️⬇️⬅️➡️ ADJUST HERE (x, y) - positive y = UP, negative y = DOWN
+                  offset: const Offset(14.3, -2), // ⬆️⬇️⬅️➡️ ADJUST HERE (x, y) - positive y = UP, negative y = DOWN
                   child: AnimatedButton(
                     onTap: () {
                       print('Winners button tapped');
@@ -109,7 +109,7 @@ Widget buildSharedBottomNav(BuildContext context) {
                 const SizedBox(width: 67), // Space for gold button
                 // PRODUCTS ICON (right-center) - ADJUSTABLE
                 Transform.translate(
-                  offset: const Offset(-10, -12), // ⬆️⬇️⬅️➡️ ADJUST HERE (x, y) - positive y = UP, negative y = DOWN
+                  offset: const Offset(-10, -2), // ⬆️⬇️⬅️➡️ ADJUST HERE (x, y) - positive y = UP, negative y = DOWN
                   child: AnimatedButton(
                     onTap: () {
                       print('Products button tapped');
@@ -131,7 +131,7 @@ Widget buildSharedBottomNav(BuildContext context) {
                 ),
                 // QR SCANNER ICON (right) - ADJUSTABLE
                 Transform.translate(
-                  offset: const Offset(-12.2, 0), // ⬆️⬇️⬅️➡️ ADJUST HERE (x, y) - positive y = UP, negative y = DOWN
+                  offset: const Offset(-12.2, 10), // ⬆️⬇️⬅️➡️ ADJUST HERE (x, y) - positive y = UP, negative y = DOWN
                   child: AnimatedButton(
                     onTap: () {
                       print('QR Scanner button tapped');

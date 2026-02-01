@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../widgets/shared_nav.dart';
 import '../controllers/products_controller.dart';
 import '../models/product.dart';
+import '../widgets/favorite_heart_button.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
@@ -432,33 +433,9 @@ class ProductsScreen extends StatelessWidget {
         Positioned(
           top: -7, // Only 1/4 of circle (7px) shows above top edge
           left: 0, // Left edge of circle aligned with left edge of card
-          child: GestureDetector(
-            onTap: () => controller.toggleFavorite(product.id),
-            child: Container(
-              width: 28, // Same size as final screen
-              height: 28,
-              decoration: BoxDecoration(
-                color: product.isFavorite ? Color(0xFFFFE4E1) : Color(0xFFE9ECEF), // Change color when favorited
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 1), // Thin white border
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: SvgPicture.asset(
-                'Design materials/Icons/Frame 2147227093.svg', // Same heart icon
-                width: 16,
-                height: 16,
-                colorFilter: ColorFilter.mode(
-                  product.isFavorite ? Colors.red : Colors.grey,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
+          child: FavoriteHeartButton(
+            isFavorite: product.isFavorite,
+            onPressed: () async => controller.toggleFavorite(product.id),
           ),
         ),
       ],

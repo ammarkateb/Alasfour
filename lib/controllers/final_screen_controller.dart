@@ -208,6 +208,12 @@ class FinalScreenController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Favorites
+  Future<void> toggleFavorite(String productId) async {
+    await _productService.toggleFavorite(productId);
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     _productService.removeListener(_onServiceChanged);
